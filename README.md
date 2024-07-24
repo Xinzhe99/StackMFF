@@ -1,7 +1,11 @@
 # StackMFF
 End-to-end Multi-Focus Image Stack Fusion Network
 
-## Prepare datasets
+## Prepare datasets for evaluation
+We have prepared all the evaluation datasets for you, which can be downloaded [here](https://pan.baidu.com/s/1n68SffCOg5RpzRgCIuuy4g?pwd=cite).
+Put Datasets_StackMFF to data/Datasets_StackMFF
+If you want to make your own evaluation dataset, please refer to the following:
+
 ### 1. 4D Light Field
 Download [4D-Light-Field](https://lightfield-analysis.uni-konstanz.de/) dataset
 Put full_data.zip under ./data/4D-Light-Field_Gen
@@ -40,16 +44,15 @@ mv calibration/GTLarge calibration/largemotion
 cd ..
 unzip depth_from_focus_data3.zip
 ```
-### 5. We have prepared all the evaluation datasets for you, which can be downloaded [here](https://pan.baidu.com/s/1n68SffCOg5RpzRgCIuuy4g?pwd=cite).
-Put Datasets_StackMFF to data/Datasets_StackMFF
+
 
 ## 2. Inference
 ### If you want to inference datasets, run:
 ```
-python predict_dataset.py
+python predict_dataset.py --model_path checkpoint/checkpoint.pth --stack_basedir_path data/Datasets_StackMFF/4D-Light-Field/image stack
 ```
 ### If you want to inference a image stack, run:
 ```
-python predict.py
+python predict.py --model_path checkpoint/checkpoint.pth --stack_path data/Datasets_StackMFF/4D-Light-Field/image stack/boxes
 ```
 
