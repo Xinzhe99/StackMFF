@@ -40,3 +40,4 @@ mv calibration/GTLarge calibration/largemotion
 cd ..
 unzip depth_from_focus_data3.zip
 ```
+### 5. We have prepared all the evaluation datasets for you, which can be downloaded [cite](https://pan.baidu.com/s/1n68SffCOg5RpzRgCIuuy4g?pwd=cite)
