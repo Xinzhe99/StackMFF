@@ -41,3 +41,4 @@ cd ..
 unzip depth_from_focus_data3.zip
 ```
 ### 5. We have prepared all the evaluation datasets for you, which can be downloaded [here](https://pan.baidu.com/s/1n68SffCOg5RpzRgCIuuy4g?pwd=cite).
+Put Datasets_StackMFF to data/Datasets_StackMFF
