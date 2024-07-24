@@ -1,13 +1,11 @@
 # -*- coding: utf-8 -*-
 # @Author  : XinZhe Xie
 # @University  : ZheJiang University
-import torch
-import torch.nn as nn
 
 import torch
 import torch.nn as nn
-import math
 import torch.nn.functional as F
+import math
 
 
 class h_sigmoid(nn.Module):
@@ -27,7 +25,9 @@ class h_swish(nn.Module):
     def forward(self, x):
         return x * self.sigmoid(x)
 
-
+#ref: "Coordinate Attention for Efficient Mobile Network Design"
+#paper: https://arxiv.org/pdf/2103.02907
+#github: https://github.com/Andrew-Qibin/CoordAttention
 class CoordAtt(nn.Module):
     def __init__(self, inp, oup, reduction=32):
         super(CoordAtt, self).__init__()
@@ -100,7 +100,7 @@ class CoordAtt_3d(nn.Module):
         a_h = self.conv_h(x_h).sigmoid()
         a_w = self.conv_w(x_w).sigmoid()
         out = identity * a_w * a_h * a_d
-        return out#todo 不用注意力机制试一下
+        return out
 
 
 # x_3d = torch.randn(2, 64,16, 224, 224)  # b, c, h, w
