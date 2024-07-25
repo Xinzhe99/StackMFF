@@ -46,7 +46,7 @@ unzip depth_from_focus_data3.zip
 ```
 
 
-## 2. Inference
+## Inference
 ### If you want to inference datasets, run:
 ```
 python predict_dataset.py --model_path checkpoint/checkpoint.pth --stack_basedir_path data/Datasets_StackMFF/4D-Light-Field/image stack
@@ -56,3 +56,12 @@ python predict_dataset.py --model_path checkpoint/checkpoint.pth --stack_basedir
 python predict.py --model_path checkpoint/checkpoint.pth --stack_path data/Datasets_StackMFF/4D-Light-Field/image stack/boxes
 ```
 
+## Train
+### 1. Download the validation set of the original dataset [Open Images V7](https://github.com/cvdfoundation/open-images-dataset#download-full-dataset-with-google-storage-transfer) used to make the training dataset, and put all images to data/OpenImagesV7.
+### 2. run:
+```
+python make_dataset.py
+```
+python makedataset
+### 2. Train StackMFF
+The training code will be released after the article is accepted.
