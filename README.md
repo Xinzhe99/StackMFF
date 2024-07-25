@@ -7,6 +7,12 @@ Existing end-to-end multi-focus image fusion networks work well for merging two 
 ![image](https://github.com/user-attachments/assets/60c88b7d-9655-42ec-a382-42a52857bac2)
 ![image](https://github.com/user-attachments/assets/9ff49f42-071b-485b-9a32-b2730aee085b)
 ![image](https://github.com/user-attachments/assets/e4cd0f74-3fb2-43a3-bfac-bfe76630d04f)
+# ⭐Highlights
+- Proposes the first network specifically designed for multi-focus image stack fusion.
+- Introduces a novel pipeline for synthesizing image stacks based on depth estimation.
+- Establishes a benchmark for the multi-focus image stack fusion task.
+- Releases a multi-focus image stack fusion toolbox containing 12 algorithms.
+- Achieves state-of-the-art fusion performance and processing speed.
 
 ## 🔨Installation (GPU)
 - pytorch 1.13.0
@@ -86,6 +92,6 @@ mv calibration/GTLarge calibration/largemotion
 cd ..
 unzip depth_from_focus_data3.zip
 ```
-## ⭐Download
+## ✅Download
 ### 1. [Fusion results of various methods](https://pan.baidu.com/s/1PSZLc-wvsePbqXATl3ZOpg?pwd=cite)
 ### 2. The toolbox of multi-focus image fusion is being integrated and we will release it as soon as possible.
