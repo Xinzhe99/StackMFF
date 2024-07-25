@@ -8,6 +8,40 @@ Existing end-to-end multi-focus image fusion networks work well for merging two 
 ![image](https://github.com/user-attachments/assets/9ff49f42-071b-485b-9a32-b2730aee085b)
 ![image](https://github.com/user-attachments/assets/e4cd0f74-3fb2-43a3-bfac-bfe76630d04f)
 
+## 🔨Installation (GPU)
+- pytorch 1.13.0
+- torchvision 0.14.0
+- opencv-python 4.9.0.80
+- pillow 10.2.0
+- tensorboardX 2.6.22
+- tqdm 4.66.2
+
+## ✈️Inference
+### If you want to inference datasets, run:
+```
+python predict_dataset.py --model_path checkpoint/checkpoint.pth --stack_basedir_path data/Datasets_StackMFF/4D-Light-Field/image stack
+```
+### If you want to inference a image stack, run:
+```
+python predict.py --model_path checkpoint/checkpoint.pth --stack_path data/Datasets_StackMFF/4D-Light-Field/image stack/boxes
+```
+
+## ✈️Train
+### 1. Download datasets for training
+Download the validation set of the original dataset [Open Images V7](https://github.com/cvdfoundation/open-images-dataset#download-full-dataset-with-google-storage-transfer) used to make the training dataset, and put all images to 'data/OpenImagesV7'.
+### 2. Split the datasets
+Split the datasets validation set of the original dataset [Open Images V7](https://github.com/cvdfoundation/open-images-dataset#download-full-dataset-with-google-storage-transfer) into 2 training sets and validation sets by running the following command:
+```
+python split_dataset.py
+```
+### 3. Get depth maps
+Using [Metric3D](https://github.com/YvanYin/Metric3D) to get depth maps (8bit, range from 0 to 255) for all images, and put all depth maps to 'data/OpenImagesV7/train_depth' and 'data/OpenImagesV7/test_depth', respectively. Then, using depth-adapted multi-Focus simulation (DAMS) to get multi-focus image stacks, run:
+```
+python make_dataset.py
+```
+### 4. Train StackMFF
+The training code will be released after the article is accepted.
+
 ## 🌈Prepare datasets for evaluation
 We have prepared all the evaluation datasets for you, which can be downloaded [here](https://pan.baidu.com/s/1n68SffCOg5RpzRgCIuuy4g?pwd=cite).
 Put Datasets_StackMFF to data/Datasets_StackMFF
@@ -52,40 +86,6 @@ mv calibration/GTLarge calibration/largemotion
 cd ..
 unzip depth_from_focus_data3.zip
 ```
-
-## 🔨Installation (GPU)
-- pytorch 1.13.0
-- torchvision 0.14.0
-- opencv-python 4.9.0.80
-- pillow 10.2.0
-- tensorboardX 2.6.22
-- tqdm 4.66.2
-## ✈️Inference
-### If you want to inference datasets, run:
-```
-python predict_dataset.py --model_path checkpoint/checkpoint.pth --stack_basedir_path data/Datasets_StackMFF/4D-Light-Field/image stack
-```
-### If you want to inference a image stack, run:
-```
-python predict.py --model_path checkpoint/checkpoint.pth --stack_path data/Datasets_StackMFF/4D-Light-Field/image stack/boxes
-```
-
-## ✈️Train
-### 1. Download datasets for training
-Download the validation set of the original dataset [Open Images V7](https://github.com/cvdfoundation/open-images-dataset#download-full-dataset-with-google-storage-transfer) used to make the training dataset, and put all images to 'data/OpenImagesV7'.
-### 2. Split the datasets
-Split the datasets validation set of the original dataset [Open Images V7](https://github.com/cvdfoundation/open-images-dataset#download-full-dataset-with-google-storage-transfer) into 2 training sets and validation sets by running the following command:
-```
-python split_dataset.py
-```
-### 3. Get depth maps
-Using [Metric3D](https://github.com/YvanYin/Metric3D) to get depth maps (8bit, range from 0 to 255) for all images, and put all depth maps to 'data/OpenImagesV7/train_depth' and 'data/OpenImagesV7/test_depth', respectively. Then, using depth-adapted multi-Focus simulation (DAMS) to get multi-focus image stacks, run:
-```
-python make_dataset.py
-```
-### 4. Train StackMFF
-The training code will be released after the article is accepted.
-
 ## ⭐Download
 ### 1. [Fusion results of various methods](https://pan.baidu.com/s/1PSZLc-wvsePbqXATl3ZOpg?pwd=cite)
 ### 2. The toolbox of multi-focus image fusion is being integrated and we will release it as soon as possible.
