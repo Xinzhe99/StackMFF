@@ -60,8 +60,10 @@ python predict.py --model_path checkpoint/checkpoint.pth --stack_path data/Datas
 ### 1. Download the validation set of the original dataset [Open Images V7](https://github.com/cvdfoundation/open-images-dataset#download-full-dataset-with-google-storage-transfer) used to make the training dataset, and put all images to data/OpenImagesV7.
 ### 2. run:
 ```
+python split_dataset.py
 python make_dataset.py
 ```
-python makedataset
+  
+
 ### 2. Train StackMFF
 The training code will be released after the article is accepted.
