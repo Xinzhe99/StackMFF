@@ -1,6 +1,6 @@
 # 🚀StackMFF🚀
 Official PyTorch implementation of "StackMFF: End-to-end Multi-Focus Image Stack Fusion Network"
-# 🌼 Abstract
+# 🌼Abstract
 Existing end-to-end multi-focus image fusion networks work well for merging two images but suffer from various types of image degradation when applied to image stacks. To address this issue, we propose a novel 3D CNN approach for end-to-end fusion of entire multi-focus image stacks. Furthermore, we developed a synthesis pipeline based on monocular depth estimation to create a large-scale dataset for training. To improve the fusion quality, we introduce a 3D coordinate adaptive enhancement module to amplify and emphasize high-frequency information. Additionally, we establish a benchmark for multi-focus image stack fusion tasks and release a comprehensive toolbox containing 12 different algorithms to facilitate consistent evaluation and comparison. Extensive experiments show that our method can effectively fuse multi-focus image stacks while reducing image degradation, achieving state-of-the-art performance in fusion quality and processing speed.
 ![image](https://github.com/user-attachments/assets/5f4fb183-0716-478d-b696-7ba433d56e4a)
 ![image](https://github.com/user-attachments/assets/a26d6139-6729-481f-a7f6-eb701ddf6f4c)
@@ -8,7 +8,7 @@ Existing end-to-end multi-focus image fusion networks work well for merging two 
 ![image](https://github.com/user-attachments/assets/9ff49f42-071b-485b-9a32-b2730aee085b)
 ![image](https://github.com/user-attachments/assets/e4cd0f74-3fb2-43a3-bfac-bfe76630d04f)
 
-## Prepare datasets for evaluation
+## 🌈Prepare datasets for evaluation
 We have prepared all the evaluation datasets for you, which can be downloaded [here](https://pan.baidu.com/s/1n68SffCOg5RpzRgCIuuy4g?pwd=cite).
 Put Datasets_StackMFF to data/Datasets_StackMFF
 If you want to make your own evaluation dataset, please refer to the following:
@@ -52,15 +52,14 @@ cd ..
 unzip depth_from_focus_data3.zip
 ```
 
-## 🔨 Installation (GPU)
+## 🔨Installation (GPU)
 - pytorch 1.13.0
 - torchvision 0.14.0
 - opencv-python 4.9.0.80
 - pillow 10.2.0
 - tensorboardX 2.6.22
 - tqdm 4.66.2
-- 
-## Inference
+## ✈️Inference
 ### If you want to inference datasets, run:
 ```
 python predict_dataset.py --model_path checkpoint/checkpoint.pth --stack_basedir_path data/Datasets_StackMFF/4D-Light-Field/image stack
@@ -70,7 +69,7 @@ python predict_dataset.py --model_path checkpoint/checkpoint.pth --stack_basedir
 python predict.py --model_path checkpoint/checkpoint.pth --stack_path data/Datasets_StackMFF/4D-Light-Field/image stack/boxes
 ```
 
-## Train
+## ✈️Train
 ### 1. Download the validation set of the original dataset [Open Images V7](https://github.com/cvdfoundation/open-images-dataset#download-full-dataset-with-google-storage-transfer) used to make the training dataset, and put all images to data/OpenImagesV7.
 ### 2. Split the validation set of the original dataset [Open Images V7](https://github.com/cvdfoundation/open-images-dataset#download-full-dataset-with-google-storage-transfer) into 2 training sets and validation sets by running the following command:
 ```
@@ -82,5 +81,5 @@ python split_dataset.py
 python make_dataset.py
 ```
 
-### 5. Train StackMFF
+### 5. ✈Train StackMFF
 The training code will be released after the article is accepted.
