@@ -52,7 +52,14 @@ cd ..
 unzip depth_from_focus_data3.zip
 ```
 
-
+## 🔨 Installation (GPU)
+- pytorch 1.13.0
+- torchvision 0.14.0
+- opencv-python 4.9.0.80
+- pillow 10.2.0
+- tensorboardX 2.6.22
+- tqdm 4.66.2
+- 
 ## Inference
 ### If you want to inference datasets, run:
 ```
