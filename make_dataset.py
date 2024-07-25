@@ -62,14 +62,14 @@ def Simulate_Dof(img,img_depth,num_regions,name):
 num_regions = 16 # 分割区域
 # 源数据集地址
 # 训练的原图
-ori_train_dataset_path = 'data/OpenImagesV7/train'
+ori_train_dataset_path = 'data/OpenImagesV7/train_lable'
 # 训练的深度图
 depth_train_dataset_path = 'data/OpenImagesV7/train_depth'
 
 # 测试的原图
-ori_test_dataset_path = 'data/OpenImagesV7/val'
+ori_test_dataset_path = 'data/OpenImagesV7/test_lable'
 # 测试的深度图
-depth_test_dataset_path = 'data/OpenImagesV7/val_depth'
+depth_test_dataset_path = 'data/OpenImagesV7/test_depth'
 
 # 保存地址
 sys_train = 'data/OpenImagesV7/train_stack'
