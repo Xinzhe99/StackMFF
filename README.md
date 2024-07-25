@@ -1,10 +1,12 @@
-# StackMFF
-End-to-end Multi-Focus Image Stack Fusion Network
-[network.pdf](https://github.com/user-attachments/files/16371584/network.pdf)
-[4dlightfield_sideboard_compare.pdf](https://github.com/user-attachments/files/16371592/4dlightfield_sideboard_compare.pdf)
-[FlyingThings3D_20_compare.pdf](https://github.com/user-attachments/files/16371594/FlyingThings3D_20_compare.pdf)
-[Middlebury_motor_compare.pdf](https://github.com/user-attachments/files/16371595/Middlebury_motor_compare.pdf)
-[mobile_depth_compare2.pdf](https://github.com/user-attachments/files/16371602/mobile_depth_compare2.pdf)
+# 🚀StackMFF🚀
+Official PyTorch implementation of "StackMFF: End-to-end Multi-Focus Image Stack Fusion Network"
+# 🌼 Abstract
+Existing end-to-end multi-focus image fusion networks work well for merging two images but suffer from various types of image degradation when applied to image stacks. To address this issue, we propose a novel 3D CNN approach for end-to-end fusion of entire multi-focus image stacks. Furthermore, we developed a synthesis pipeline based on monocular depth estimation to create a large-scale dataset for training. To improve the fusion quality, we introduce a 3D coordinate adaptive enhancement module to amplify and emphasize high-frequency information. Additionally, we establish a benchmark for multi-focus image stack fusion tasks and release a comprehensive toolbox containing 12 different algorithms to facilitate consistent evaluation and comparison. Extensive experiments show that our method can effectively fuse multi-focus image stacks while reducing image degradation, achieving state-of-the-art performance in fusion quality and processing speed.
+![image](https://github.com/user-attachments/assets/5f4fb183-0716-478d-b696-7ba433d56e4a)
+![image](https://github.com/user-attachments/assets/a26d6139-6729-481f-a7f6-eb701ddf6f4c)
+![image](https://github.com/user-attachments/assets/60c88b7d-9655-42ec-a382-42a52857bac2)
+![image](https://github.com/user-attachments/assets/9ff49f42-071b-485b-9a32-b2730aee085b)
+![image](https://github.com/user-attachments/assets/e4cd0f74-3fb2-43a3-bfac-bfe76630d04f)
 
 ## Prepare datasets for evaluation
 We have prepared all the evaluation datasets for you, which can be downloaded [here](https://pan.baidu.com/s/1n68SffCOg5RpzRgCIuuy4g?pwd=cite).
