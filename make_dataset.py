@@ -13,7 +13,8 @@ def Simulate_Dof(img,img_depth,num_regions,name):
     # img : ndarry
     # img_depth : ndarry
     # num_regions : int
-
+    img=cv2.resize(img,(384,384))
+    img_depth=cv2.resize(img_depth,(384,384))
     # 把一张图片，根据模糊等级，模糊N次
     imgs_blurred_list = []
     kernel_list= [2 * i + 1 for i in range(num_regions)]
@@ -71,10 +72,10 @@ ori_test_dataset_path = 'data/OpenImagesV7/val'
 depth_test_dataset_path = 'data/OpenImagesV7/val_depth'
 
 # 保存地址
-sys_train = '/data/Datasets_train_StackMFF/train_stack'
-sys_train_mask = '/data/Datasets_train_StackMFF/train_mask'
-sys_val = '/data/Datasets_train_StackMFF/test_stack'
-sys_val_mask = '/data/Datasets_train_StackMFF/test_mask'
+sys_train = 'data/OpenImagesV7/train_stack'
+sys_train_mask = 'data/OpenImagesV7/train_mask'
+sys_val = 'data/OpenImagesV7/test_stack'
+sys_val_mask = 'data/OpenImagesV7/test_mask'
 
 if not os.path.exists(sys_train):  # 判断是否存在文件夹如果不存在则创建为文件夹
     os.makedirs(sys_train)
