@@ -11,6 +11,7 @@ Existing end-to-end multi-focus image fusion networks work well for merging two 
 ## 🌈Prepare datasets for evaluation
 We have prepared all the evaluation datasets for you, which can be downloaded [here](https://pan.baidu.com/s/1n68SffCOg5RpzRgCIuuy4g?pwd=cite).
 Put Datasets_StackMFF to data/Datasets_StackMFF
+
 If you want to make your own evaluation dataset, please refer to the following:
 
 ### 1. 4D Light Field
@@ -83,3 +84,7 @@ python make_dataset.py
 
 ### 5. ✈Train StackMFF
 The training code will be released after the article is accepted.
+
+## ⭐ Download
+### 1. [Fusion results of various methods](https://pan.baidu.com/s/1PSZLc-wvsePbqXATl3ZOpg?pwd=cite)
+### 2. The toolbox of multi-focus image fusion is being integrated and we will release it as soon as possible.
