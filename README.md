@@ -1,5 +1,10 @@
 # StackMFF
 End-to-end Multi-Focus Image Stack Fusion Network
+[network.pdf](https://github.com/user-attachments/files/16371584/network.pdf)
+[4dlightfield_sideboard_compare.pdf](https://github.com/user-attachments/files/16371592/4dlightfield_sideboard_compare.pdf)
+[FlyingThings3D_20_compare.pdf](https://github.com/user-attachments/files/16371594/FlyingThings3D_20_compare.pdf)
+[Middlebury_motor_compare.pdf](https://github.com/user-attachments/files/16371595/Middlebury_motor_compare.pdf)
+[mobile_depth_compare2.pdf](https://github.com/user-attachments/files/16371602/mobile_depth_compare2.pdf)
 
 ## Prepare datasets for evaluation
 We have prepared all the evaluation datasets for you, which can be downloaded [here](https://pan.baidu.com/s/1n68SffCOg5RpzRgCIuuy4g?pwd=cite).
