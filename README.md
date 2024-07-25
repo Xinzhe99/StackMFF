@@ -58,12 +58,15 @@ python predict.py --model_path checkpoint/checkpoint.pth --stack_path data/Datas
 
 ## Train
 ### 1. Download the validation set of the original dataset [Open Images V7](https://github.com/cvdfoundation/open-images-dataset#download-full-dataset-with-google-storage-transfer) used to make the training dataset, and put all images to data/OpenImagesV7.
-### 2. run:
+### 2. Split the validation set of the original dataset [Open Images V7](https://github.com/cvdfoundation/open-images-dataset#download-full-dataset-with-google-storage-transfer) into 2 training sets and validation sets by running the following command:
 ```
 python split_dataset.py
+```
+### 3. Using [Metric3D](https://github.com/YvanYin/Metric3D) to get depth maps (8bit, range from 0 to 255) for all images, and put all depth maps to data/OpenImagesV7/train_depth and data/OpenImagesV7/val_depth, respectively.
+### 4. Using depth-adapted multi-Focus simulation (DAMS) to get multi-focus image stacks, run:
+```
 python make_dataset.py
 ```
-  
 
-### 2. Train StackMFF
+### 5. Train StackMFF
 The training code will be released after the article is accepted.
