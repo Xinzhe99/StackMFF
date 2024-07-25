@@ -4,8 +4,8 @@ import shutil
 
 # 定义路径
 source_dir = 'data/OpenImagesV7'
-train_dir = os.path.join(source_dir, 'train')
-val_dir = os.path.join(source_dir, 'val')
+train_dir = os.path.join(source_dir, 'train_lable')
+val_dir = os.path.join(source_dir, 'test_lable')
 
 # 创建目标文件夹（如果不存在）
 os.makedirs(train_dir, exist_ok=True)
