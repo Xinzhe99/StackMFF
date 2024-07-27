@@ -95,8 +95,6 @@ unzip depth_from_focus_data3.zip
 
 ## ✅Depth-adapted multi-focus simulation
 
-![image](https://github.com/user-attachments/assets/6a6a8a08-3129-4be6-a3f8-459b18f85adb)
-![image](https://github.com/user-attachments/assets/99b21969-763e-446d-a9fa-d50da85370f4)
 
 
 ## ✅Download
