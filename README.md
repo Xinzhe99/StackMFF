@@ -94,11 +94,10 @@ unzip depth_from_focus_data3.zip
 ```
 
 ## ✅Depth-adapted multi-focus simulation
-### Common multi-focus image stack fusion method
-![common](./Visualization/common.gif)
-### Proposed
 ![image](https://github.com/user-attachments/assets/2e7927d6-74ea-4fc8-a2d8-2f80a0ad1eca)
-
+Common:
+![common](./Visualization/common.gif)
+Proposed:
 ![DMAS](./Visualization/DAMS.gif)
 
 
