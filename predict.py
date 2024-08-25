@@ -12,106 +12,117 @@ from nets.U3D_OFFICIAL_MFF import UNet3D
 from PIL import Image
 import numpy as np
 import torchvision.transforms as transforms
+from numba import jit, prange
 
 parser = argparse.ArgumentParser(description='Predict')
-parser.add_argument('--predict_name',default='predict')
-parser.add_argument('--model_path',default='/checkpoint/checkpoint.pth')
-parser.add_argument('--stack_path',default='/xxx/xxx'
-                    ,help='image stack path')
-#好用的，boxes,balcony,alley,keyboard,shelf,balls
-parser.add_argument('--out_format',default='bmp')
+parser.add_argument('--predict_name', default='predict')
+parser.add_argument('--model_path',
+                    default=r'/media/user/68fdd01e-c642-4deb-9661-23b76592afb1/xxz/project_image_stack_fusion/3dcon/checkpoint/checkpoint.pth')
+parser.add_argument('--stack_path',
+                    default=r'/media/user/68fdd01e-c642-4deb-9661-23b76592afb1/xxz/datasets/test_luo/coral_best_crop_stable_resize',
+                    help='image stack path')
+parser.add_argument('--out_format', default='jpg')
 args = parser.parse_args()
 
-#准备数据
+@jit(nopython=True, parallel=True)
+def compute_color_index(img_stack_np, y_output):
+    H, W, D = img_stack_np.shape
+    color_index = np.zeros((H, W), dtype=np.int64)
+    for i in prange(H):
+        for j in prange(W):
+            min_diff = np.inf
+            for d in range(D):
+                diff = abs(int(img_stack_np[i, j, d]) - int(y_output[i, j]))
+                if diff < min_diff:
+                    min_diff = diff
+                    color_index[i, j] = d
+    return color_index
+
+@jit(nopython=True)
+def compute_color_img(y_output, cb_stack, cr_stack, color_index):
+    H, W = y_output.shape
+    color_img = np.zeros((H, W, 3), dtype=np.uint8)
+    for i in range(H):
+        for j in range(W):
+            color_img[i, j, 0] = y_output[i, j]
+            color_img[i, j, 1] = cb_stack[i, j, color_index[i, j]]
+            color_img[i, j, 2] = cr_stack[i, j, color_index[i, j]]
+    return color_img
+
 def stack_y_channels(folder_path):
     image_paths = [os.path.join(folder_path, f) for f in os.listdir(folder_path) if
-                   f.endswith('.jpg') or f.endswith('.png') or f.endswith('.bmp')]
+                   f.endswith(('.jpg', '.png', '.bmp'))]
     y_channels = []
     for img_path in image_paths:
-        img = Image.open(img_path).convert('YCbCr')
-        y = np.array(img.split()[0])
+        img = cv2.imread(img_path)
+        img_ycc = cv2.cvtColor(img, cv2.COLOR_BGR2YCrCb)
+        y = img_ycc[:, :, 0]
+
+        original_size = y.shape
+        new_height = ((original_size[0] + 15) // 16) * 16
+        new_width = ((original_size[1] + 15) // 16) * 16
+        y = cv2.resize(y, (new_width, new_height))
         y_channels.append(y)
-    y_channels = np.stack(y_channels, axis=-1)
-    return y_channels, image_paths
 
-img_stack_np,image_paths=stack_y_channels(args.stack_path)
+    return np.stack(y_channels, axis=-1), image_paths, original_size
+
+img_stack_np, image_paths, ori_shape = stack_y_channels(args.stack_path)
 H, W, depth = img_stack_np.shape
-
 
 def get_transform():
     return transforms.Compose([
-            transforms.ToTensor(),
-            transforms.Lambda(lambda x: x.unsqueeze(0)),
-        ])
+        transforms.ToTensor(),
+        transforms.Lambda(lambda x: x.unsqueeze(0)),
+    ])
 
 processed_stack = get_transform()
 img_stack = processed_stack(img_stack_np)
-img_stack=torch.unsqueeze(img_stack,0)
+img_stack = torch.unsqueeze(img_stack, 0)
 
-#设置储存位置
-predict_save_path=config_model_dir(subdir_name='predict_runs')
+predict_save_path = config_model_dir(subdir_name='predict_runs')
 
-#准备模型
-model=UNet3D()
-model=nn.DataParallel(model)
-if torch.cuda.is_available():
-  model.cuda()
+model = UNet3D()
+model = nn.DataParallel(model)
+if torch.cuda.device_count() > 1:
+    model.cuda()
+model.load_state_dict(torch.load(args.model_path, map_location=lambda storage, loc: storage))
 
-model.load_state_dict(torch.load(args.model_path,map_location=lambda storage, loc: storage))
-
-#开始推理
+t_start = time.time()
 model.eval()
-output = model(img_stack)
+with torch.no_grad():
+    output = model(img_stack)
+print(f"Inference time: {time.time() - t_start:.4f} seconds")
 
 def tensor2uint(img):
     img = img.data.squeeze().float().clamp_(0, 1).cpu().numpy()
     if img.ndim == 3:
         img = np.transpose(img, (1, 2, 0))
     return np.uint8((img * 255.0).round())
-y_output = np.squeeze(tensor2uint(output))
 
-# #保存Y通道
-# cv2.imwrite(os.path.join(predict_save_path, 'result_y.{}'.format(args.out_format)), y_output)
+y_output = cv2.resize(np.squeeze(tensor2uint(output)), (ori_shape[1], ori_shape[0]))
 
-#颜色信息通过Y通道内找最相近的值找到索引图像层,寻找颜色索引矩阵color_index
-target = np.array(y_output).astype(np.int64)
-img_stack_np=img_stack_np.astype(np.int64)
+img_stack_np = cv2.resize(img_stack_np, (ori_shape[1], ori_shape[0]))
 
-dist_list=[]
-for depth_index in range(depth):
-    dist = np.abs(img_stack_np[:,:,depth_index] - target)
-    dist_list.append(dist)
-dist_list=np.stack(dist_list,-1)
-color_index=np.argmin(dist_list, axis=2)
+t_start = time.time()
+color_index = compute_color_index(img_stack_np, y_output)
+print(f"Color index computation time: {time.time() - t_start:.4f} seconds")
 
-cb_channels=[]
-cr_channels=[]
-#每一个像素都根据索引矩阵取原始Cb和Cr
+cb_channels = []
+cr_channels = []
 for img_path in image_paths:
     img = Image.open(img_path).convert('YCbCr')
-    y = np.array(img.split()[0])
-    cb = np.array(img.split()[1])
-    cr = np.array(img.split()[2])
+    cb, cr = [np.array(img.getchannel(ch)) for ch in ('Cb', 'Cr')]
     cb_channels.append(cb)
     cr_channels.append(cr)
 
-#每一像素逐一合成颜色
-color_img=np.zeros((H,W,3)).astype(np.int32)
-for i in range(H):
-    for j in range(W):
-        color_index_number=color_index[i,j]
-        cb_pixel=cb_channels[color_index_number][i,j]
-        cr_pixel = cr_channels[color_index_number][i, j]
-        y_pixel=y_output[i,j]
+cb_stack = np.stack(cb_channels, axis=-1)
+cr_stack = np.stack(cr_channels, axis=-1)
 
-        color_img[i, j, 0] = y_pixel
-        color_img[i, j, 1] = cb_pixel
-        color_img[i, j, 2] = cr_pixel
+t_start = time.time()
+color_img = compute_color_img(y_output, cb_stack, cr_stack, color_index)
+print(f"Color image computation time: {time.time() - t_start:.4f} seconds")
 
-color_img=color_img.astype(np.int8)
-color_img = Image.fromarray(color_img, 'YCbCr')
-rgb_img = color_img.convert('RGB')
+rgb_img = Image.fromarray(color_img, 'YCbCr').convert('RGB')
 
-# 保存图片
-rgb_img.save(os.path.join(predict_save_path, 'result_color.{}'.format(args.out_format)),quality=100)
-print('image is save in {}'.format(str(os.path.join(predict_save_path, 'result_color.{}'.format(args.out_format)))))
+rgb_img.save(os.path.join(predict_save_path, f'result_color.{args.out_format}'), quality=100)
+print(f'Image is saved in {os.path.join(predict_save_path, f"result_color.{args.out_format}")}')
