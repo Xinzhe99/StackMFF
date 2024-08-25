@@ -6,13 +6,12 @@ import cv2
 import torch
 import torch.nn as nn
 import argparse
-import os.path
-from tools.config_dir import config_model_dir
-from nets.U3D_OFFICIAL_MFF import UNet3D
-from PIL import Image
+import os
 import numpy as np
 import torchvision.transforms as transforms
 from numba import jit, prange
+from tools.config_dir import config_model_dir
+from nets.U3D_OFFICIAL_MFF import UNet3D
 
 parser = argparse.ArgumentParser(description='Predict')
 parser.add_argument('--predict_name', default='predict')
@@ -110,8 +109,9 @@ print(f"Color index computation time: {time.time() - t_start:.4f} seconds")
 cb_channels = []
 cr_channels = []
 for img_path in image_paths:
-    img = Image.open(img_path).convert('YCbCr')
-    cb, cr = [np.array(img.getchannel(ch)) for ch in ('Cb', 'Cr')]
+    img = cv2.imread(img_path)
+    img_ycc = cv2.cvtColor(img, cv2.COLOR_BGR2YCrCb)
+    cb, cr = img_ycc[:, :, 1], img_ycc[:, :, 2]
     cb_channels.append(cb)
     cr_channels.append(cr)
 
@@ -122,7 +122,7 @@ t_start = time.time()
 color_img = compute_color_img(y_output, cb_stack, cr_stack, color_index)
 print(f"Color image computation time: {time.time() - t_start:.4f} seconds")
 
-rgb_img = Image.fromarray(color_img, 'YCbCr').convert('RGB')
+rgb_img = cv2.cvtColor(color_img, cv2.COLOR_YCrCb2BGR)
 
-rgb_img.save(os.path.join(predict_save_path, f'result_color.{args.out_format}'), quality=100)
+cv2.imwrite(os.path.join(predict_save_path, f'result_color.{args.out_format}'), rgb_img, [int(cv2.IMWRITE_JPEG_QUALITY), 100])
 print(f'Image is saved in {os.path.join(predict_save_path, f"result_color.{args.out_format}")}')
