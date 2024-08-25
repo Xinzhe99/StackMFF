@@ -124,5 +124,5 @@ print(f"Color image computation time: {time.time() - t_start:.4f} seconds")
 
 rgb_img = cv2.cvtColor(color_img, cv2.COLOR_YCrCb2BGR)
 
-cv2.imwrite(os.path.join(predict_save_path, f'result_color.{args.out_format}'), rgb_img, [int(cv2.IMWRITE_JPEG_QUALITY), 100])
+cv2.imwrite(os.path.join(predict_save_path, f'result_color.{args.out_format}'), rgb_img)
 print(f'Image is saved in {os.path.join(predict_save_path, f"result_color.{args.out_format}")}')
