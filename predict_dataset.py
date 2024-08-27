@@ -10,8 +10,8 @@ import argparse
 import os
 import numpy as np
 import torchvision.transforms as transforms
-from numba import jit, prange
 from tqdm import tqdm
+from torch.utils.data import Dataset, DataLoader
 
 # Import your custom modules
 from tools.config_dir import config_model_dir
@@ -29,79 +29,66 @@ parser.add_argument('--stack_basedir_path',
 parser.add_argument('--out_format', default='jpg', help='Output image format (e.g., jpg, png)')
 args = parser.parse_args()
 
+class ImageStackDataset(Dataset):
+    def __init__(self, folder_path):
+        self.image_paths = [os.path.join(folder_path, f) for f in os.listdir(folder_path) if
+                            f.lower().endswith(('.jpg', '.png', '.bmp'))]
+        if not self.image_paths:
+            raise ValueError(f"No images found in folder: {folder_path}")
 
-# Numba-Accelerated Function to Compute Color Index
-@jit(nopython=True, parallel=True)
-def compute_color_index(img_stack_np, y_output):
-    H, W, D = img_stack_np.shape
-    color_index = np.zeros((H, W), dtype=np.int64)
-    for i in prange(H):
-        for j in prange(W):
-            min_diff = np.inf
-            for d in range(D):
-                diff = abs(int(img_stack_np[i, j, d]) - int(y_output[i, j]))
-                if diff < min_diff:
-                    min_diff = diff
-                    color_index[i, j] = d
-    return color_index
+    def __len__(self):
+        return len(self.image_paths)
 
-
-# Numba-Accelerated Function to Compute Color Image
-@jit(nopython=True)
-def compute_color_img(y_output, cb_stack, cr_stack, color_index):
-    H, W = y_output.shape
-    color_img = np.zeros((H, W, 3), dtype=np.uint8)
-    for i in range(H):
-        for j in range(W):
-            color_img[i, j, 0] = y_output[i, j]
-            color_img[i, j, 1] = cb_stack[i, j, color_index[i, j]]
-            color_img[i, j, 2] = cr_stack[i, j, color_index[i, j]]
-    return color_img
-
-
-# Function to Stack Y Channels from Images in a Folder
-def stack_y_channels(folder_path):
-    image_paths = [os.path.join(folder_path, f) for f in os.listdir(folder_path) if
-                   f.lower().endswith(('.jpg', '.png', '.bmp'))]
-    if not image_paths:
-        raise ValueError(f"No images found in folder: {folder_path}")
-
-    y_channels = []
-    for img_path in image_paths:
+    def __getitem__(self, idx):
+        img_path = self.image_paths[idx]
         img = cv2.imread(img_path)
         if img is None:
-            print(f"Warning: Unable to read image {img_path}. Skipping.")
-            continue
+            raise ValueError(f"Unable to read image {img_path}")
         img_ycc = cv2.cvtColor(img, cv2.COLOR_BGR2YCrCb)
         y = img_ycc[:, :, 0]
+        cb = img_ycc[:, :, 1]
+        cr = img_ycc[:, :, 2]
+        return y, cb, cr
 
-        original_size = y.shape
-        new_height = ((original_size[0] + 15) // 16) * 16
-        new_width = ((original_size[1] + 15) // 16) * 16
-        y_resized = cv2.resize(y, (new_width, new_height))
-        y_channels.append(y_resized)
+def stack_y_channels(folder_path):
+    dataset = ImageStackDataset(folder_path)
+    dataloader = DataLoader(dataset, batch_size=1, shuffle=False)
 
-    if not y_channels:
-        raise ValueError(f"No valid images processed in folder: {folder_path}")
+    y_channels = []
+    cb_channels = []
+    cr_channels = []
+    for y, cb, cr in dataloader:
+        y_channels.append(y[0].numpy())
+        cb_channels.append(cb[0].numpy())
+        cr_channels.append(cr[0].numpy())
 
-    return np.stack(y_channels, axis=-1), image_paths, original_size
+    y_stack = np.stack(y_channels, axis=-1)
+    original_size = y_stack.shape[:2]
+    new_height = ((original_size[0] + 15) // 16) * 16
+    new_width = ((original_size[1] + 15) // 16) * 16
+    y_stack = cv2.resize(y_stack, (new_width, new_height))
+    return y_stack, cb_channels, cr_channels, original_size
 
-
-# Function to Define Image Transformations
 def get_transform():
     return transforms.Compose([
         transforms.ToTensor(),
         transforms.Lambda(lambda x: x.unsqueeze(0)),
     ])
 
-
-# Function to Convert Tensor to Unsigned Integer Image
 def tensor2uint(img):
     img = img.data.squeeze().float().clamp_(0, 1).cpu().numpy()
     if img.ndim == 3:
         img = np.transpose(img, (1, 2, 0))
     return np.uint8((img * 255.0).round())
 
+def fuse_images_vectorized(y_stack, cb_stack, cr_stack, fused_y):
+    diff = np.abs(y_stack - fused_y[:, :, np.newaxis])
+    color_index = np.argmin(diff, axis=2)
+    fused_image = np.zeros((*fused_y.shape, 3), dtype=np.uint8)
+    fused_image[:, :, 0] = fused_y
+    fused_image[:, :, 1] = np.take_along_axis(cb_stack, color_index[:, :, np.newaxis], axis=2).squeeze()
+    fused_image[:, :, 2] = np.take_along_axis(cr_stack, color_index[:, :, np.newaxis], axis=2).squeeze()
+    return cv2.cvtColor(fused_image, cv2.COLOR_YCrCb2BGR)
 
 # Retrieve List of Stack Directories
 stack_dir_list = [d for d in os.listdir(args.stack_basedir_path) if
@@ -129,7 +116,7 @@ for stack_name in tqdm(stack_dir_list, desc='Processing Stacks'):
     stack_path = os.path.join(args.stack_basedir_path, stack_name)
 
     try:
-        img_stack_np, image_paths, ori_shape = stack_y_channels(stack_path)
+        img_stack_np, cb_channels, cr_channels, ori_shape = stack_y_channels(stack_path)
     except ValueError as e:
         print(e)
         continue
@@ -162,38 +149,17 @@ for stack_name in tqdm(stack_dir_list, desc='Processing Stacks'):
 
     # Compute Color Index Using Numba
     img_stack_np_resized = cv2.resize(img_stack_np, (ori_shape[1], ori_shape[0]))
-    color_index = compute_color_index(img_stack_np_resized, y_output_resized)
-    print(f"Computed color index for stack '{stack_name}'")
 
-    # Extract and Resize Cb and Cr Channels from All Images
-    cb_channels = []
-    cr_channels = []
-    for img_path in image_paths:
-        img = cv2.imread(img_path)
-        if img is None:
-            print(f"Warning: Unable to read image {img_path}. Using default Cb and Cr values.")
-            cb = np.zeros((ori_shape[0], ori_shape[1]), dtype=np.uint8)
-            cr = np.zeros((ori_shape[0], ori_shape[1]), dtype=np.uint8)
-        else:
-            img_ycc = cv2.cvtColor(img, cv2.COLOR_BGR2YCrCb)
-            cb = cv2.resize(img_ycc[:, :, 1], (ori_shape[1], ori_shape[0]))
-            cr = cv2.resize(img_ycc[:, :, 2], (ori_shape[1], ori_shape[0]))
-        cb_channels.append(cb)
-        cr_channels.append(cr)
-
-    cb_stack = np.stack(cb_channels, axis=-1)
-    cr_stack = np.stack(cr_channels, axis=-1)
+    cb_stack = np.dstack(cb_channels)
+    cr_stack = np.dstack(cr_channels)
 
     # Compute Color Image Using Numba
-    color_img = compute_color_img(y_output_resized, cb_stack, cr_stack, color_index)
+    color_img = fuse_images_vectorized(img_stack_np_resized, cb_stack, cr_stack, y_output_resized)
     print(f"Computed color image for stack '{stack_name}'")
 
-    # Convert YCbCr to BGR Color Space
-    color_img_bgr = cv2.cvtColor(color_img, cv2.COLOR_YCrCb2BGR)
-
     # Save Color Image
-    color_save_path = os.path.join(predict_save_path, f'{stack_name}_rgb.{args.out_format}')
-    cv2.imwrite(color_save_path, color_img_bgr)
+    color_save_path = os.path.join(predict_save_path, f'{stack_name}.{args.out_format}')
+    cv2.imwrite(color_save_path, color_img)
     print(f"Saved color image to: {color_save_path}")
 
 # Compute and Display Mean Inference Time
