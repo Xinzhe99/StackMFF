@@ -6,6 +6,7 @@ Existing end-to-end multi-focus image fusion networks work well for merging two 
 
 ![image](https://github.com/user-attachments/assets/60c88b7d-9655-42ec-a382-42a52857bac2)
 ![image](https://github.com/user-attachments/assets/9ff49f42-071b-485b-9a32-b2730aee085b)
+![Uploading image.png…]()
 
 # ⭐Highlights
 - Proposes the first network specifically designed for multi-focus image stack fusion.
