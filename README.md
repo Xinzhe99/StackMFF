@@ -103,4 +103,4 @@ Proposed:
 
 ## ✅Download
 ### 1. [Fusion results of various methods](https://pan.baidu.com/s/1PSZLc-wvsePbqXATl3ZOpg?pwd=cite)
-### 2. The toolbox of multi-focus image fusion is being integrated and we will release it as soon as possible.
+### 2. [The toolbox for multi-focus image stack fusion](https://pan.baidu.com/s/1Njq9uAiRPNiqpZ0Uq3LJAw?pwd=cite)
