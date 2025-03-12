@@ -1,7 +1,7 @@
 # 🚀StackMFF🚀
 Official PyTorch implementation of "StackMFF: End-to-end Multi-Focus Image Stack Fusion Network"
 
-Our paper has been accepted by APIN ~ Coming soon
+Our paper has been accepted by APIN ~
 # 🌼Abstract
 Existing end-to-end multi-focus image fusion networks work well for merging two images but suffer from various types of image degradation when applied to image stacks. To address this issue, we propose a novel 3D CNN approach for end-to-end fusion of entire multi-focus image stacks. Furthermore, we developed a synthesis pipeline based on monocular depth estimation to create a large-scale dataset for training. To improve the fusion quality, we introduce a 3D coordinate adaptive enhancement module to amplify and emphasize high-frequency information. Additionally, we establish a benchmark for multi-focus image stack fusion tasks and release a comprehensive toolbox containing 12 different algorithms to facilitate consistent evaluation and comparison. Extensive experiments show that our method can effectively fuse multi-focus image stacks while reducing image degradation, achieving state-of-the-art performance in fusion quality and processing speed.
 ![image](https://github.com/user-attachments/assets/5f4fb183-0716-478d-b696-7ba433d56e4a)
@@ -111,3 +111,51 @@ Proposed:
 ### 1. [Fusion results of various methods](https://pan.baidu.com/s/1PSZLc-wvsePbqXATl3ZOpg?pwd=cite)
 
 ### 2. [The toolbox for multi-focus image stack fusion](https://github.com/Xinzhe99/Toolbox-for-Multi-focus-Image-Stack-Fusion/tree/main)
+
+## 📝 Citation
+
+If you find this work useful for your research, please consider citing our papers:
+```bibtex
+@article{XIE2025110238,
+title = {Multi-focus image fusion with visual state space model and dual adversarial learning},
+journal = {Computers and Electrical Engineering},
+volume = {123},
+pages = {110238},
+year = {2025},
+issn = {0045-7906},
+doi = {https://doi.org/10.1016/j.compeleceng.2025.110238},
+url = {https://www.sciencedirect.com/science/article/pii/S0045790625001818},
+author = {Xinzhe Xie and Buyu Guo and Peiliang Li and Shuangyan He and Sangjun Zhou},
+keywords = {Deep learning, Multi-focus image fusion, Adversarial learning, Fine-tuning technology, Visual state space model}
+}
+
+@article{xie2025stackmff,
+  title={StackMFF: end-to-end multi-focus image stack fusion network},
+  author={Xie, Xinzhe and Qingyan, Jiang and Chen, Dong and Guo, Buyu and Li, Peiliang and Zhou, Sangjun},
+  journal={Applied Intelligence},
+  volume={55},
+  number={6},
+  pages={503},
+  year={2025},
+  publisher={Springer}
+}
+
+@article{xie2024swinmff,
+  title={SwinMFF: toward high-fidelity end-to-end multi-focus image fusion via swin transformer-based network},
+  author={Xie, Xinzhe and Guo, Buyu and Li, Peiliang and He, Shuangyan and Zhou, Sangjun},
+  journal={The Visual Computer},
+  pages={1--24},
+  year={2024},
+  publisher={Springer}
+}
+
+@inproceedings{xie2024underwater,
+  title={Underwater Three-Dimensional Microscope for Marine Benthic Organism Monitoring},
+  author={Xie, Xinzhe and Guo, Buyu and Li, Peiliang and Jiang, Qingyan},
+  booktitle={OCEANS 2024-Singapore},
+  pages={1--4},
+  year={2024},
+  organization={IEEE}
+}
+
+```
