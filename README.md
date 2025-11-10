@@ -77,7 +77,7 @@ Download the validation set of the original dataset [Open Images V7](https://git
 | 🗂️ **Test Datasets** | [![Download](https://img.shields.io/badge/Download-4CAF50?style=flat-square)](https://pan.baidu.com/s/1vnEciGFDDjDybmoxNSAVSA) | `cite` | Complete evaluation datasets |
 | 📊 **Benchmark Results** | [![Download](https://img.shields.io/badge/Download-FF9800?style=flat-square)](https://pan.baidu.com/s/1Q93goQxa0tdXne1UQxA8-Q?pwd=cite) | `cite` | Fusion results from all methods |
 | 🧰 **Fusion Toolbox** | [![GitHub](https://img.shields.io/badge/GitHub-2196F3?style=flat-square)](https://github.com/Xinzhe99/Toolbox-for-Multi-focus-Image-Stack-Fusion) | - | Iterative fusion implementations |
-| 🧰 **Metric3D** | [![GitHub](https://img.shields.io/badge/GitHub-2196F3?style=flat-square)](https://github.com/Xinzhe99/Toolbox-for-Multi-focus-Image-Stack-Fusion(https://github.com/YvanYin/Metric3D) | - | Metric3D |
+| 🧰 **Metric3D** | [![GitHub](https://img.shields.io/badge/GitHub-2196F3?style=flat-square)](https://github.com/YvanYin/Metric3D) | - | Metric3D |
 
 ## 💻 Usage
 
@@ -100,16 +100,9 @@ python predict_dataset.py --stack_basedir_path path/to/dataset
 ```
 
 ### Training
-
-3. Get depth maps
-Using [Metric3D](https://github.com/YvanYin/Metric3D) to get depth maps (8bit, range from 0 to 255) for all images, and put all depth maps to 'data/OpenImagesV7', respectively. Then, run:
-
+```bash
+python train.py --datapath path/to/training_datasets --exp_name stackmff_training
 ```
-python make_dataset.py
-```
-
-
-
 
 ## 📚 Citation
 
