@@ -38,10 +38,15 @@ Existing end-to-end multi-focus image fusion (MFF) networks demonstrate excellen
 
 
 ## ✨ Highlights
+
 🌟 Proposes the first network specifically designed for multi-focus image stack fusion.
+
 🔑 Introduces a novel pipeline for synthesizing image stacks based on depth estimation.
+
 🎯 Establishes a benchmark for the multi-focus image stack fusion task.
+
 🛠️ Releases a multi-focus image stack fusion toolbox containing 12 algorithms.
+
 🏆 Achieves state-of-the-art fusion performance and processing speed.
 
 ## 🚀 Installation
