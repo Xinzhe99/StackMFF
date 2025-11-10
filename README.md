@@ -1,6 +1,6 @@
 <div align="center">
 
-# <img src="assets/stackmff.svg" alt="StackMFF V2" height="320" style="vertical-align: middle;"/> StackMFF
+# <img src="assets/stackmff.svg" alt="StackMFF V2" height="320" style="vertical-align: middle;"/>
 
 **StackMFF: end-to-end multi-focus image stack fusion network**
 
