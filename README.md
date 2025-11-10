@@ -10,6 +10,7 @@
 [![GitHub](https://img.shields.io/badge/GitHub-StackMFF--V2-black.svg)](https://github.com/Xinzhe99/StackMFF)
 
 </div>
+
 ## 📢 News
 
 > [!NOTE]
