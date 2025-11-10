@@ -11,11 +11,11 @@
 
 > [!NOTE]
 
-> 🎉 **2025.11**: Our updated work StackMFF V3 has been submitted and is under review! [Project Link](https://github.com/Xinzhe99/StackMFF-V3)
+> 🎉 **2025.11**: StackMFF V3 has been submitted and is under review! [Project Link](https://github.com/Xinzhe99/StackMFF-V3)
 
 > 🎉 **2025.11**: We reorganized the project code, which has subtle differences from the original implementation in the paper.
 
-> 🎉 **2025.9**: Our latest work StackMFF V2 has been accepted by EAAI! [Project Link](https://github.com/Xinzhe99/StackMFF-V2)
+> 🎉 **2025.9**: StackMFF V2 has been accepted by EAAI! [Project Link](https://github.com/Xinzhe99/StackMFF-V2)
 
 
 > 🎉 **2025.4**: The paper has been published by Applied Intelligence! [Paper Link](https://link.springer.com/article/10.1007/s10489-025-06383-8).
