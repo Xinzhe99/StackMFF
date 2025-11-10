@@ -7,7 +7,7 @@
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
 [![Python](https://img.shields.io/badge/Python-3.8+-blue.svg)](https://www.python.org/)
 [![PyTorch](https://img.shields.io/badge/PyTorch-1.8+-red.svg)](https://pytorch.org/)
-[![GitHub](https://img.shields.io/badge/GitHub-StackMFF--V2-black.svg)](https://github.com/Xinzhe99/StackMFF-V2)
+[![GitHub](https://img.shields.io/badge/GitHub-StackMFF-black.svg)](https://github.com/Xinzhe99/StackMFF)
 [![Paper](https://img.shields.io/badge/Paper-Springer-brightgreen.svg)](https://link.springer.com/article/10.1007/s10489-025-06383-8)
 
 *Official PyTorch implementation for StackMFF: end-to-end multi-focus image stack fusion network*
