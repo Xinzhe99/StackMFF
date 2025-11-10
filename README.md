@@ -2,8 +2,6 @@
 
 # <img src="assets/stackmff_logo.svg" alt="StackMFF" height="320" style="vertical-align: middle;"/> StackMFF
 
-**StackMFF: End-to-end Multi-Focus Image Stack Fusion Network**
-
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
 [![Python](https://img.shields.io/badge/Python-3.8+-blue.svg)](https://www.python.org/)
 [![PyTorch](https://img.shields.io/badge/PyTorch-1.8+-red.svg)](https://pytorch.org/)
