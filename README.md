@@ -1,134 +1,117 @@
-# 🚀StackMFF🚀
-Official PyTorch implementation of "StackMFF: End-to-end Multi-Focus Image Stack Fusion Network"
+<div align="center">
 
-Our paper has been accepted by APIN ~
-# 🌼Abstract
-Existing end-to-end multi-focus image fusion networks work well for merging two images but suffer from various types of image degradation when applied to image stacks. To address this issue, we propose a novel 3D CNN approach for end-to-end fusion of entire multi-focus image stacks. Furthermore, we developed a synthesis pipeline based on monocular depth estimation to create a large-scale dataset for training. To improve the fusion quality, we introduce a 3D coordinate adaptive enhancement module to amplify and emphasize high-frequency information. Additionally, we establish a benchmark for multi-focus image stack fusion tasks and release a comprehensive toolbox containing 12 different algorithms to facilitate consistent evaluation and comparison. Extensive experiments show that our method can effectively fuse multi-focus image stacks while reducing image degradation, achieving state-of-the-art performance in fusion quality and processing speed.
-![image](https://github.com/user-attachments/assets/5f4fb183-0716-478d-b696-7ba433d56e4a)
+# <img src="assets/stackmff_logo.svg" alt="StackMFF" height="320" style="vertical-align: middle;"/> StackMFF V2
 
-![image](https://github.com/user-attachments/assets/60c88b7d-9655-42ec-a382-42a52857bac2)
+**StackMFF: End-to-end Multi-Focus Image Stack Fusion Network**
 
-![image](https://github.com/user-attachments/assets/9ff49f42-071b-485b-9a32-b2730aee085b)
+[![License](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
+[![Python](https://img.shields.io/badge/Python-3.8+-blue.svg)](https://www.python.org/)
+[![PyTorch](https://img.shields.io/badge/PyTorch-1.8+-red.svg)](https://pytorch.org/)
+[![GitHub](https://img.shields.io/badge/GitHub-StackMFF--V2-black.svg)](https://github.com/Xinzhe99/StackMFF)
 
-![image](https://github.com/user-attachments/assets/e473da64-2575-4faf-bfa2-5e3c80ecc9e3)
+## 📢 News
+
+> [!NOTE]
+> 🎉 **2025.11**: We reorganized the project code, which has subtle differences from the original implementation in the paper.
+
+> 🎉 **2025.4**: The paper has been published by Applied Intelligence! [Paper Link](https://link.springer.com/article/10.1007/s10489-025-06383-8).
+
+</div>
+
+##  Table of Contents
+
+- [Overview](#-overview)
+- [Highlights](#-highlights)
+- [Installation](#-installation)
+- [Data Preparation](#-data-preparation)
+- [Downloads](#-downloads)
+- [Usage](#-usage)
+- [Citation](#-citation)
+
+## 📖 Overview
+
+Existing end-to-end multi-focus image fusion (MFF) networks demonstrate excellent performance when fusing image pairs. However, when image stacks are processed, the necessity for iterative fusion leads to error accumulation, resulting in various types and degrees of image degradation, which ultimately limits the algorithms’ practical applications. To address this challenge and expand the application scenarios of multi-focus fusion algorithms, we propose a relatively simple yet effective approach: utilizing 3D convolutional neural networks to directly model and fuse entire multi-focus image stacks in an end-to-end manner. To obtain large-scale training data, we developed a refocusing pipeline based on monocular depth estimation technology that can synthesize a multi-focus image stack from any all-in-focus image. Furthermore, we extended the attention mechanisms commonly used in image pair fusion networks from two dimensions to three dimensions and proposed a comprehensive loss function group, effectively enhancing the fusion quality. Extensive experimental results demonstrate that the proposed method achieves state-of-the-art performance in both fusion quality and processing speed while avoiding image degradation issues, establishing a simple yet powerful baseline for the multi-focus image stack fusion task.
 
 
-# ⭐Highlights
-- Proposes the first network specifically designed for multi-focus image stack fusion.
-- Introduces a novel pipeline for synthesizing image stacks based on depth estimation.
-- Establishes a benchmark for the multi-focus image stack fusion task.
-- Releases a multi-focus image stack fusion toolbox containing 12 algorithms.
-- Achieves state-of-the-art fusion performance and processing speed.
+## ✨ Highlights
+🌟 Proposes the first network specifically designed for multi-focus image stack fusion.
+🔑 Introduces a novel pipeline for synthesizing image stacks based on depth estimation.
+🎯 Establishes a benchmark for the multi-focus image stack fusion task.
+🛠️ Releases a multi-focus image stack fusion toolbox containing 12 algorithms.
+🏆 Achieves state-of-the-art fusion performance and processing speed.
 
-## 🔨Installation (GPU)
-- pytorch 1.13.0
-- torchvision 0.14.0
-- opencv-python 4.9.0.80
-- pillow 10.2.0
-- tensorboardX 2.6.22
-- tqdm 4.66.2
+## 🚀 Installation
+
+1. Clone the repository:
+```bash
+git clone https://github.com/Xinzhe99/StackMFF.git
+cd StackMFF-V2
+```
+
+2. Create and activate a virtual environment (recommended):
+```bash
+conda create -n stackmff python=3.8
+conda activate stackmff
+```
+
+3. Install dependencies:
+```bash
+pip install -r requirements.txt
+```
+
+## 📥 Downloads
+Download the validation set of the original dataset [Open Images V7](https://github.com/cvdfoundation/open-images-dataset#download-full-dataset-with-google-storage-transfer) used to make the training dataset, and put all images to 'data/OpenImagesV7'.
+
+| Resource | Link | Code | Description |
+|----------|------|------|-------------|
+| 🗂️ **Training Datasets** | [![Download](https://img.shields.io/badge/Download-4CAF50?style=flat-square)](https://github.com/cvdfoundation/open-images-dataset#download-full-dataset-with-google-storage-transfer) | `-` | Complete evaluation datasets |
+| 🗂️ **Test Datasets** | [![Download](https://img.shields.io/badge/Download-4CAF50?style=flat-square)](https://pan.baidu.com/s/1vnEciGFDDjDybmoxNSAVSA) | `cite` | Complete evaluation datasets |
+| 📊 **Benchmark Results** | [![Download](https://img.shields.io/badge/Download-FF9800?style=flat-square)](https://pan.baidu.com/s/1Q93goQxa0tdXne1UQxA8-Q?pwd=cite) | `cite` | Fusion results from all methods |
+| 🧰 **Fusion Toolbox** | [![GitHub](https://img.shields.io/badge/GitHub-2196F3?style=flat-square)](https://github.com/Xinzhe99/Toolbox-for-Multi-focus-Image-Stack-Fusion) | - | Iterative fusion implementations |
+
+## 💻 Usage
+
+The pre-trained model weights file `checkpoint.pth` should be placed in the `weights` directory.
 
 ## ✈️Inference
 ### If you want to inference datasets, run:
 ```
 python predict_dataset.py --model_path checkpoint/checkpoint.pth --stack_basedir_path data/Datasets_StackMFF/4D-Light-Field/image stack
 ```
-### If you want to inference a image stack, run:
+
+### Predict Single Stack
 ```
-python predict.py --model_path checkpoint/checkpoint.pth --stack_path data/Datasets_StackMFF/4D-Light-Field/image stack/boxes
+python predict.py --stack_path path/to/image/stack
 ```
 
-## ✈️Train
-### 1. Download datasets for training
+### Predict Dataset
+```bash
+python predict_dataset.py --stack_basedir_path path/to/dataset
+```
+
+### Training
+
+1. Download datasets for training
 Download the validation set of the original dataset [Open Images V7](https://github.com/cvdfoundation/open-images-dataset#download-full-dataset-with-google-storage-transfer) used to make the training dataset, and put all images to 'data/OpenImagesV7'.
-### 2. Split the datasets
-Split the datasets validation set of the original dataset [Open Images V7](https://github.com/cvdfoundation/open-images-dataset#download-full-dataset-with-google-storage-transfer) into 2 training sets and validation sets by running the following command:
-```
-python split_dataset.py
-```
-### 3. Get depth maps
-Using [Metric3D](https://github.com/YvanYin/Metric3D) to get depth maps (8bit, range from 0 to 255) for all images, and put all depth maps to 'data/OpenImagesV7/train_depth' and 'data/OpenImagesV7/test_depth', respectively. Then, using depth-adapted multi-Focus simulation (DAMS) to get multi-focus image stacks, run:
+
+3. Get depth maps
+Using [Metric3D](https://github.com/YvanYin/Metric3D) to get depth maps (8bit, range from 0 to 255) for all images, and put all depth maps to 'data/OpenImagesV7', respectively. Then, run:
+
 ```
 python make_dataset.py
 ```
-### 4. Train StackMFF
-The training code will be released after the article is accepted.
-
-## 🌈Prepare datasets for evaluation
-We have prepared all the evaluation datasets for you, which can be downloaded [here](https://pan.baidu.com/s/1RJ0melbyYHelvEbkaANp_Q?pwd=cite).
-Put Datasets_StackMFF to data/Datasets_StackMFF
-
-If you want to make your own evaluation dataset, please refer to the following:
-
-### 1. 4D Light Field
-Download [4D-Light-Field](https://lightfield-analysis.uni-konstanz.de/) dataset
-Put full_data.zip under ./data/4D-Light-Field_Gen
-Run the following command under ./data/4D-Light-Field_Gen
-
-```
-unzip full_data.zip
-python LF2hdf5.py --base_dir ./full_data --output_dir ./LF
-python FS_gen.py --LF_path ./LF/HCI_LF_trainval.h5 --output_dir ./FS
-python save_AiF.py ./FS/HCI_FS_trainval.h5 ./FS
-python save_stack.py ./FS/HCI_FS_trainval.h5 ./FS
-```
-
-### 2. FlyingThings3D Dataset
-Download [FlyingThings3D_FS](https://drive.google.com/file/d/19n3QGhg-IViwt0aqQ4rR8J3sO60PoWgL/view?usp=sharing) under ./data/FlyingThings3D/
-Unzip the dataset
-
-### 3. Middlebury Dataset
-
-Download [Middlebury_FS](https://drive.google.com/file/d/1FDXf47Qp1-dT_C7bo30ZySvvPAgJf5FU/view?usp=sharing) under 'data/Middlebury'
-Unzip the dataaset
-Mobile Depth Dataset
-
-### 4. Mobile Depth Dataset
-Download [Mobile Depth](https://www.supasorn.com/dffdownload.html) dataset under 'data/Mobile_Depth_Gen'
-Run the following command under ./data/Mobile_Depth_Gen
-```
-mkdir Photos_Calibration_Results
-mv depth_from_focus_data2.zip Photos_Calibration_Results
-cd Photos_Calibration_Results
-unzip ./depth_from_focus_data2.zip
-mv calibration/metal calibration/metals
-mv calibration/GT calibration/zeromotion
-mv calibration/GTSmall calibration/smallmotion
-mv calibration/GTLarge calibration/largemotion
-cd ..
-unzip depth_from_focus_data3.zip
-```
-
-## ✅Depth-adapted multi-focus simulation
-![image](https://github.com/user-attachments/assets/2e7927d6-74ea-4fc8-a2d8-2f80a0ad1eca)
-Common:
-![common](./Visualization/common.gif)
-Proposed:
-![DMAS](./Visualization/DAMS.gif)
 
 
-## ✅Download
-### 1. [Fusion results of various methods](https://pan.baidu.com/s/1Q93goQxa0tdXne1UQxA8-Q?pwd=cite)
 
-### 2. [The toolbox for multi-focus image stack fusion](https://github.com/Xinzhe99/Toolbox-for-Multi-focus-Image-Stack-Fusion/tree/main)
 
-## 📝 Citation
+## 📚 Citation
 
-If you find this work useful for your research, please consider citing our papers:
+If you use this project in your research, please cite our papers:
+
+<details>
+<summary>📋 BibTeX</summary>
+
 ```bibtex
-@article{XIE2025110238,
-title = {Multi-focus image fusion with visual state space model and dual adversarial learning},
-journal = {Computers and Electrical Engineering},
-volume = {123},
-pages = {110238},
-year = {2025},
-issn = {0045-7906},
-doi = {https://doi.org/10.1016/j.compeleceng.2025.110238},
-url = {https://www.sciencedirect.com/science/article/pii/S0045790625001818},
-author = {Xinzhe Xie and Buyu Guo and Peiliang Li and Shuangyan He and Sangjun Zhou},
-keywords = {Deep learning, Multi-focus image fusion, Adversarial learning, Fine-tuning technology, Visual state space model}
-}
-
 @article{xie2025stackmff,
   title={StackMFF: end-to-end multi-focus image stack fusion network},
   author={Xie, Xinzhe and Qingyan, Jiang and Chen, Dong and Guo, Buyu and Li, Peiliang and Zhou, Sangjun},
@@ -139,23 +122,14 @@ keywords = {Deep learning, Multi-focus image fusion, Adversarial learning, Fine-
   year={2025},
   publisher={Springer}
 }
-
-@article{xie2024swinmff,
-  title={SwinMFF: toward high-fidelity end-to-end multi-focus image fusion via swin transformer-based network},
-  author={Xie, Xinzhe and Guo, Buyu and Li, Peiliang and He, Shuangyan and Zhou, Sangjun},
-  journal={The Visual Computer},
-  pages={1--24},
-  year={2024},
-  publisher={Springer}
-}
-
-@inproceedings{xie2024underwater,
-  title={Underwater Three-Dimensional Microscope for Marine Benthic Organism Monitoring},
-  author={Xie, Xinzhe and Guo, Buyu and Li, Peiliang and Jiang, Qingyan},
-  booktitle={OCEANS 2024-Singapore},
-  pages={1--4},
-  year={2024},
-  organization={IEEE}
-}
-
 ```
+
+</details>
+
+## 🙏 Acknowledgments
+
+We sincerely thank all the reviewers and the editors for their responsible efforts and valuable feedback, which have greatly improved the quality of this study!
+
+⭐ If you find this project helpful, please give it a star!
+</div>
+
