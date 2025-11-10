@@ -69,7 +69,6 @@ pip install -r requirements.txt
 ```
 
 ## 📥 Downloads
-Download the validation set of the original dataset [Open Images V7](https://github.com/cvdfoundation/open-images-dataset#download-full-dataset-with-google-storage-transfer) used to make the training dataset, and put all images to `data/OpenImagesV7`.
 
 | Resource | Link | Code | Description |
 |----------|------|------|-------------|
@@ -100,8 +99,12 @@ python predict_dataset.py --stack_basedir_path path/to/dataset
 ```
 
 ### Training
+1. Download the validation set of the original dataset [Open Images V7](https://github.com/cvdfoundation/open-images-dataset#download-full-dataset-with-google-storage-transfer) used to make the training dataset, and put all images to `data/OpenImagesV7`.
+2. Use Metric3D to get depth maps.
+3. Use make_dataset.py to make training datasets.
+4. Run:
 ```bash
-python train.py --datapath path/to/training_datasets --exp_name stackmff_training
+python train.py --datapath path/to/training_datasets --exp_name stackmff_training --datapath data/OpenImagesV7
 ```
 
 ## 📚 Citation
