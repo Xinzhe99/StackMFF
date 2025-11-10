@@ -1,117 +1,131 @@
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-# @Author  : XinZhe Xie
-# @University  : ZheJiang University
+"""
+Script Function: Generate multi-focus image stacks by simulating depth of field (DOF) effects.
+This script takes original images and their corresponding depth maps to create a series of 
+images with different focus regions, simulating the depth of field effect.
+
+Input Structure:
+- Original images (jpg format) in a specified directory
+- Corresponding depth maps (png format) in another directory
+  Depth maps should have the same name as the original images but with .png extension
+
+Output Structure:
+- Stack images (jpg format) saved in the specified output directory
+- Mask images (png format) saved in the specified mask output directory
+  Each stack contains N images with different focus regions
+  Each mask corresponds to a focus region in the stack
+
+Usage Example:
+python make_dataset.py --ori_dataset_path path/to/original/images 
+                      --depth_dataset_path path/to/depth/maps 
+                      --sys_path path/to/save/stacks 
+                      --sys_mask_path path/to/save/masks 
+                      --num_regions 16
+"""
+
 import glob
 import cv2
 import numpy as np
 import os
 from tqdm import tqdm
+import argparse
 
-#模拟景深
-def Simulate_Dof(img,img_depth,num_regions,name):
-    #parameters
-    # img : ndarry
-    # img_depth : ndarry
-    # num_regions : int
-    img=cv2.resize(img,(384,384))
-    img_depth=cv2.resize(img_depth,(384,384))
-    # 把一张图片，根据模糊等级，模糊N次
+
+def simulate_dof(img, img_depth, num_regions, name, save_sys_path, save_mask_path):
+    """Simulate depth of field effect to generate multi-focus image stacks.
+    
+    Args:
+        img: Original image (ndarray)
+        img_depth: Depth map of the image (ndarray)
+        num_regions: Number of focus regions to generate
+        name: Name of the image (used for saving)
+        save_sys_path: Path to save the generated stack images
+        save_mask_path: Path to save the mask images
+    """
+    # Resize images to 384x384
+    img = cv2.resize(img, (384, 384))
+    img_depth = cv2.resize(img_depth, (384, 384))
+    
+    # Blur the image with different kernel sizes
     imgs_blurred_list = []
-    kernel_list= [2 * i + 1 for i in range(num_regions)]
-
+    kernel_list = [2 * i + 1 for i in range(num_regions)]
+    
     for i in kernel_list:
-        img_blured=cv2.GaussianBlur(img,(i,i),0)
+        img_blured = cv2.GaussianBlur(img, (i, i), 0)
         imgs_blurred_list.append(img_blured)
-
-    #根据depth的值来制作模糊蒙版
-    # 生成0-255的参考划分点
-    ref_points = np.linspace(0, 255, num_regions+1)
-
-    # 进行量化,分段，得到一个矩阵，每个值表示该像素在的划分段
+    
+    # Create blur masks based on depth values
+    # Generate reference points for quantization
+    ref_points = np.linspace(0, 255, num_regions + 1)
+    
+    # Quantize depth map into regions
     quantized = np.digitize(img_depth, ref_points) - 1
-
-    #每个蒙版都是在该分段的为True
+    
+    # Generate masks for each region
     masks = []
     for i in range(num_regions):
-        # 生成对应值的mask
-        mask = (quantized == i)#mask中
+        mask = (quantized == i)
         masks.append(mask)
-
-    #按不同的mask取出模糊图像中清晰的部分，组成为一张图像
-    sys_result=np.zeros_like(img)
-
+    
+    # Synthesize defocused images
+    sys_result = np.zeros_like(img)
+    
     current_sys_folder = os.path.join(save_sys_path, name)
     current_mask_folder = os.path.join(save_mask_path, name)
     os.makedirs(current_sys_folder, exist_ok=True)
     os.makedirs(current_mask_folder, exist_ok=True)
-
-    for index_mask,mask in enumerate(masks):
+    
+    for index_mask, mask in enumerate(masks):
         mask_result = mask.astype(np.uint8) * 255
-        # 保存mask结果
+        # Save mask result
         cv2.imwrite(os.path.join(current_mask_folder, f'{index_mask}.png'), mask_result)
-
-        #合成散焦图像
-        for ind,mask in enumerate(masks):
-            target_index=abs(ind-index_mask)
-            sys_result[mask]=imgs_blurred_list[target_index][mask]
-
-        # 保存blured结果
+        
+        # Synthesize defocused image
+        for ind, mask_item in enumerate(masks):
+            target_index = abs(ind - index_mask)
+            sys_result[mask_item] = imgs_blurred_list[target_index][mask_item]
+        
+        # Save blurred result
         cv2.imwrite(os.path.join(current_sys_folder, f'{index_mask}.jpg'), sys_result)
 
 
-num_regions = 16 # 分割区域
-# 源数据集地址
-# 训练的原图
-ori_train_dataset_path = 'data/OpenImagesV7/train_lable'
-# 训练的深度图
-depth_train_dataset_path = 'data/OpenImagesV7/train_depth'
-
-# 测试的原图
-ori_test_dataset_path = 'data/OpenImagesV7/test_lable'
-# 测试的深度图
-depth_test_dataset_path = 'data/OpenImagesV7/test_depth'
-
-# 保存地址
-sys_train = 'data/OpenImagesV7/train_stack'
-sys_train_mask = 'data/OpenImagesV7/train_mask'
-sys_val = 'data/OpenImagesV7/test_stack'
-sys_val_mask = 'data/OpenImagesV7/test_mask'
-
-if not os.path.exists(sys_train):  # 判断是否存在文件夹如果不存在则创建为文件夹
-    os.makedirs(sys_train)
-if not os.path.exists(sys_val):  # 判断是否存在文件夹如果不存在则创建为文件夹
-    os.makedirs(sys_val)
-if not os.path.exists(sys_train_mask):  # 判断是否存在文件夹如果不存在则创建为文件夹
-    os.makedirs(sys_train_mask)
-if not os.path.exists(sys_val_mask):  # 判断是否存在文件夹如果不存在则创建为文件夹
-    os.makedirs(sys_val_mask)
-
-# 获取所有源图像
-train_ori_list = glob.glob(os.path.join(ori_train_dataset_path, '*.jpg'))
-test_ori_list = glob.glob(os.path.join(ori_test_dataset_path, '*.jpg'))
-
-
-#训练集和测试集 训练为0测试为1
-for dataset_class in range(2):
-    if dataset_class ==0:
-        print('开始制作训练集')
-        dataset_list_path=train_ori_list
-        dataset_depth_path=depth_train_dataset_path
-        save_sys_path=sys_train
-        save_mask_path = sys_train_mask
-    elif dataset_class==1:
-        print('开始制作验证集')
-        dataset_list_path = test_ori_list
-        dataset_depth_path=depth_test_dataset_path
-        save_sys_path = sys_val
-        save_mask_path = sys_val_mask
-
-    #训练/验证
-    for index,pic_path in tqdm(enumerate(dataset_list_path)):
+def main():
+    parser = argparse.ArgumentParser(description='Generate multi-focus image stacks by simulating depth of field effects.')
+    parser.add_argument('--ori_dataset_path', type=str, required=True, 
+                        help='Path to the original images directory')
+    parser.add_argument('--depth_dataset_path', type=str, required=True, 
+                        help='Path to the depth maps directory')
+    parser.add_argument('--sys_path', type=str, required=True, 
+                        help='Path to save the generated image stacks')
+    parser.add_argument('--sys_mask_path', type=str, required=True, 
+                        help='Path to save the mask images')
+    parser.add_argument('--num_regions', type=int, default=16, 
+                        help='Number of focus regions to generate (default: 16)')
+    
+    args = parser.parse_args()
+    
+    # Create output directories if they don't exist
+    if not os.path.exists(args.sys_path):
+        os.makedirs(args.sys_path)
+    if not os.path.exists(args.sys_mask_path):
+        os.makedirs(args.sys_mask_path)
+    
+    # Get all original images
+    image_list = glob.glob(os.path.join(args.ori_dataset_path, '*.jpg'))
+    
+    print('Start generating dataset...')
+    
+    # Process all images
+    for index, pic_path in tqdm(enumerate(image_list)):
         filename = os.path.basename(pic_path)
         name, ext = os.path.splitext(filename)
         img = cv2.imread(pic_path)
+        
+        img_depth = cv2.imread(os.path.join(args.depth_dataset_path, name + '.png'), 0)
+        # Simulate DOF
+        simulate_dof(img, img_depth, args.num_regions, name, args.sys_path, args.sys_mask_path)
 
-        img_depth=cv2.imread(os.path.join(dataset_depth_path,name+'.png'),0)
-        #simulate DOF
-        Simulate_Dof(img, img_depth, num_regions,name)
+
+if __name__ == '__main__':
+    main()
