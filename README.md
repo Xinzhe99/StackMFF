@@ -69,7 +69,7 @@ pip install -r requirements.txt
 ```
 
 ## 📥 Downloads
-Download the validation set of the original dataset [Open Images V7](https://github.com/cvdfoundation/open-images-dataset#download-full-dataset-with-google-storage-transfer) used to make the training dataset, and put all images to 'data/OpenImagesV7'.
+Download the validation set of the original dataset [Open Images V7](https://github.com/cvdfoundation/open-images-dataset#download-full-dataset-with-google-storage-transfer) used to make the training dataset, and put all images to `data/OpenImagesV7`.
 
 | Resource | Link | Code | Description |
 |----------|------|------|-------------|
