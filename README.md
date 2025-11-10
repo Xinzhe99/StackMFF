@@ -49,7 +49,7 @@ Existing end-to-end multi-focus image fusion (MFF) networks demonstrate excellen
 1. Clone the repository:
 ```bash
 git clone https://github.com/Xinzhe99/StackMFF.git
-cd StackMFF-V2
+cd StackMFF
 ```
 
 2. Create and activate a virtual environment (recommended):
