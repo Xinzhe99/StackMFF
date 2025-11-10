@@ -19,7 +19,7 @@
 > [!NOTE]
 > 🎉 **2025.11**: StackMFF V3 has been submitted and is under review! [Project Link](https://github.com/Xinzhe99/StackMFF-V3)
 > 
-> 🎉 **2025.11**: We reorganized the project code, which has subtle differences from the original implementation in the paper.
+> 🎉 **2025.11**: We reorganized the project code, which has subtle differences from the original implementation described in the paper.
 > 
 > 🎉 **2025.9**: StackMFF V2 has been accepted by EAAI! [Project Link](https://github.com/Xinzhe99/StackMFF-V2)
 > 
@@ -41,15 +41,15 @@ Existing end-to-end multi-focus image fusion (MFF) networks demonstrate excellen
 
 ## ✨ Highlights
 
-🌟 Proposes the first network specifically designed for multi-focus image stack fusion.
+🌟 Proposes the first network specifically designed for end-to-end multi-focus image stack fusion.
 
-🔑 Introduces a novel pipeline for synthesizing image stacks based on depth estimation.
+🔑 Introduces a novel pipeline for synthesizing multi-focus image stacks based on monocular depth estimation.
 
-🎯 Establishes a benchmark for the multi-focus image stack fusion task.
+🎯 Establishes a comprehensive benchmark for the multi-focus image stack fusion task.
 
-🛠️ Releases a multi-focus image stack fusion toolbox containing 12 algorithms.
+🛠️ Releases a comprehensive multi-focus image stack fusion toolbox containing 12 representative algorithms.
 
-🏆 Achieves state-of-the-art fusion performance and processing speed.
+🏆 Achieves state-of-the-art fusion performance with high processing speed.
 
 ## 🚀 Installation
 
@@ -74,39 +74,39 @@ pip install -r requirements.txt
 
 | Resource | Link | Code | Description |
 |----------|------|------|-------------|
-| 🗂️ **Training Datasets** | [![GitHub](https://img.shields.io/badge/GitHub-2196F3?style=flat-square)](https://github.com/cvdfoundation/open-images-dataset#download-full-dataset-with-google-storage-transfer) | `-` | Complete training datasets |
-| 🗂️ **Test Datasets** | [![Download](https://img.shields.io/badge/Download-4CAF50?style=flat-square)](https://pan.baidu.com/s/1vnEciGFDDjDybmoxNSAVSA) | `cite` | Complete evaluation datasets |
-| 📊 **Benchmark Results** | [![Download](https://img.shields.io/badge/Download-FF9800?style=flat-square)](https://pan.baidu.com/s/1Q93goQxa0tdXne1UQxA8-Q?pwd=cite) | `cite` | Fusion results from all methods |
-| 🧰 **Fusion Toolbox** | [![GitHub](https://img.shields.io/badge/GitHub-2196F3?style=flat-square)](https://github.com/Xinzhe99/Toolbox-for-Multi-focus-Image-Stack-Fusion) | - | Iterative fusion implementations |
-| 🧰 **Metric3D** | [![GitHub](https://img.shields.io/badge/GitHub-2196F3?style=flat-square)](https://github.com/YvanYin/Metric3D) | - | Metric3D |
+| 🗂️ **Training Datasets** | [![GitHub](https://img.shields.io/badge/GitHub-2196F3?style=flat-square)](https://github.com/cvdfoundation/open-images-dataset#download-full-dataset-with-google-storage-transfer) | `-` | Complete training datasets for model training |
+| 🗂️ **Test Datasets** | [![Download](https://img.shields.io/badge/Download-4CAF50?style=flat-square)](https://pan.baidu.com/s/1vnEciGFDDjDybmoxNSAVSA) | `cite` | Complete evaluation datasets for testing |
+| 📊 **Benchmark Results** | [![Download](https://img.shields.io/badge/Download-FF9800?style=flat-square)](https://pan.baidu.com/s/1Q93goQxa0tdXne1UQxA8-Q?pwd=cite) | `cite` | Benchmark results from all compared methods |
+| 🧰 **Fusion Toolbox** | [![GitHub](https://img.shields.io/badge/GitHub-2196F3?style=flat-square)](https://github.com/Xinzhe99/Toolbox-for-Multi-focus-Image-Stack-Fusion) | - | Implementations of iterative fusion methods |
+| 🧰 **Metric3D** | [![GitHub](https://img.shields.io/badge/GitHub-2196F3?style=flat-square)](https://github.com/YvanYin/Metric3D) | - | Depth estimation tool |
 
 ## 💻 Usage
 
-The pre-trained model weights file `checkpoint.pth` should be placed in the `weights` directory.
+The pre-trained model weights file `checkpoint.pth` should be placed in the `weights` directory to run the model.
 
 ## ✈️ Inference
-### If you want to inference datasets, run:
+### To inference datasets, run:
 ```
-python predict_dataset.py --model_path checkpoint/checkpoint.pth --stack_basedir_path data/Datasets_StackMFF/4D-Light-Field/image stack
+python predict_dataset.py --stack_basedir_path "path/to/dataset"
 ```
 
 ### Predict Single Stack
 ```
-python predict.py --stack_path path/to/image/stack
+python predict.py --stack_path "path/to/image/stack"
 ```
 
 ### Predict Dataset
 ```bash
-python predict_dataset.py --stack_basedir_path path/to/dataset
+python predict_dataset.py --stack_basedir_path "path/to/dataset"
 ```
 
 ### Training
-1. Download the validation set of the original dataset [Open Images V7](https://github.com/cvdfoundation/open-images-dataset#download-full-dataset-with-google-storage-transfer) used to make the training dataset, and put all images to `data/OpenImagesV7`.
+1. Download the validation set of the original dataset [Open Images V7](https://github.com/cvdfoundation/open-images-dataset#download-full-dataset-with-google-storage-transfer) used to make the training dataset, and put all images in `data/OpenImagesV7`.
 2. Use Metric3D to get depth maps.
 3. Use make_dataset.py to make training datasets.
 4. Run:
 ```bash
-python train.py --datapath path/to/training_datasets --exp_name stackmff_training
+python train.py --datapath "path/to/training_datasets" --exp_name stackmff_training
 ```
 
 ## 📚 Citation
@@ -133,6 +133,6 @@ If you use this project in your research, please cite our papers:
 
 ## 🙏 Acknowledgments
 
-We sincerely thank all the reviewers and the editors for their responsible efforts and valuable feedback, which have greatly improved the quality of this study!
+We sincerely thank all the reviewers and editors for their responsible efforts and valuable feedback, which have greatly improved the quality of this study!
 
 ⭐ If you find this project helpful, please give it a star!
