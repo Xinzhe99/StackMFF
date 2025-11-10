@@ -25,29 +25,10 @@
 
 ## Table of Contents
 
-- [Overview](#-overview)
-- [Highlights](#-highlights)
 - [Installation](#-installation)
 - [Downloads](#-downloads)
 - [Usage](#-usage)
 - [Citation](#-citation)
-
-## 📖 Overview
-
-Existing end-to-end multi-focus image fusion (MFF) networks demonstrate excellent performance when fusing image pairs. However, when image stacks are processed, the necessity for iterative fusion leads to error accumulation, resulting in various types and degrees of image degradation, which ultimately limits the algorithms' practical applications. To address this challenge and expand the application scenarios of multi-focus fusion algorithms, we propose a relatively simple yet effective approach: utilizing 3D convolutional neural networks to directly model and fuse entire multi-focus image stacks in an end-to-end manner. To obtain large-scale training data, we developed a refocusing pipeline based on monocular depth estimation technology that can synthesize a multi-focus image stack from any all-in-focus image. Furthermore, we extended the attention mechanisms commonly used in image pair fusion networks from two dimensions to three dimensions and proposed a comprehensive loss function group, effectively enhancing the fusion quality. Extensive experimental results demonstrate that the proposed method achieves state-of-the-art performance in both fusion quality and processing speed while avoiding image degradation issues, establishing a simple yet powerful baseline for the multi-focus image stack fusion task.
-
-
-## ✨ Highlights
-
-🌟 Proposes the first network specifically designed for end-to-end multi-focus image stack fusion.
-
-🔑 Introduces a novel pipeline for synthesizing multi-focus image stacks based on monocular depth estimation.
-
-🎯 Establishes a comprehensive benchmark for the multi-focus image stack fusion task.
-
-🛠️ Releases a comprehensive multi-focus image stack fusion toolbox containing 12 representative algorithms.
-
-🏆 Achieves state-of-the-art fusion performance with high processing speed.
 
 ## 🚀 Installation
 
