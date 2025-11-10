@@ -30,7 +30,6 @@
 - [Overview](#-overview)
 - [Highlights](#-highlights)
 - [Installation](#-installation)
-- [Data Preparation](#-data-preparation)
 - [Downloads](#-downloads)
 - [Usage](#-usage)
 - [Citation](#-citation)
