@@ -9,6 +9,7 @@
 [![PyTorch](https://img.shields.io/badge/PyTorch-1.8+-red.svg)](https://pytorch.org/)
 [![GitHub](https://img.shields.io/badge/GitHub-StackMFF--V2-black.svg)](https://github.com/Xinzhe99/StackMFF)
 
+</div>
 ## 📢 News
 
 > [!NOTE]
