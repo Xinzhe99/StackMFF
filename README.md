@@ -15,12 +15,16 @@
 ## 📢 News
 
 > [!NOTE]
+> 🎉 **2026.01**: This work has been included in [StackMFF-Series](https://github.com/Xinzhe99/StackMFF-Series)
+
+> 🎉 **2026.01**: StackMFF V4 has been submitted and is under review! [Project Link](https://github.com/Xinzhe99/StackMFF-V4)
+
 > 🎉 **2025.11**: StackMFF V3 has been submitted and is under review! [Project Link](https://github.com/Xinzhe99/StackMFF-V3)
-> 
+
 > 🎉 **2025.11**: We reorganized the project code, which has subtle differences from the original implementation described in the paper.
-> 
+
 > 🎉 **2025.9**: StackMFF V2 has been accepted by EAAI! [Project Link](https://github.com/Xinzhe99/StackMFF-V2)
-> 
+
 > 🎉 **2025.4**: The paper has been published by Applied Intelligence! [Paper Link](https://link.springer.com/article/10.1007/s10489-025-06383-8).
 
 ## Table of Contents
